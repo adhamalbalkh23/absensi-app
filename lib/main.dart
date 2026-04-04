@@ -1,3 +1,4 @@
+import 'package:absensi_apps/view/home_page.dart';
 import 'package:absensi_apps/view/login_page.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.blueAccent)),
-      home: LoginPage(),
+      home: HomePage(),
     );
   }
 }
