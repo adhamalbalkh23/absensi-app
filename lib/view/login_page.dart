@@ -1,3 +1,7 @@
+import 'package:absensi_apps/api/login.dart';
+import 'package:absensi_apps/liquid_navbar.dart';
+import 'package:absensi_apps/prefernce.dart';
+import 'package:absensi_apps/view/register_page.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -8,10 +12,53 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final TextEditingController username = TextEditingController();
-  final TextEditingController password = TextEditingController();
+  final TextEditingController emailControler = TextEditingController();
+  final TextEditingController passwordControler = TextEditingController();
 
   bool isHidden = true;
+
+  bool isLoading = false;
+
+  Future<void> handleLogin() async {
+    setState(() => isLoading = true);
+
+    try {
+      final result = await loginUser(
+        email: emailControler.text,
+        password: passwordControler.text,
+      );
+
+      if (result != null) {
+        await PreferenceHandler().storingIsLogin(true);
+
+        if (result.data?.token != null) {
+          await PreferenceHandler().saveToken(result.data!.token!);
+        }
+
+        if (!mounted) return;
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(result.message ?? "Login berhasil")),
+        );
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const Navbarpage()),
+        );
+      } else {
+        if (!mounted) return;
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text("Login gagal")));
+      }
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Login gagal: ${e.toString()}")));
+    } finally {
+      setState(() => isLoading = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,13 +95,13 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(height: 30),
 
               /// USERNAME
-              const Text("USERNAME", style: TextStyle(fontSize: 12)),
+              const Text("Email", style: TextStyle(fontSize: 12)),
               const SizedBox(height: 8),
 
               TextField(
-                controller: username,
+                controller: emailControler,
                 decoration: InputDecoration(
-                  hintText: "alex_rivera",
+                  hintText: "@gmail.com",
                   prefixIcon: const Icon(Icons.person),
                   filled: true,
                   fillColor: const Color(0xffF3F3F7),
@@ -72,7 +119,7 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(height: 8),
 
               TextField(
-                controller: password,
+                controller: passwordControler,
                 obscureText: isHidden,
                 decoration: InputDecoration(
                   hintText: "********",
@@ -103,14 +150,28 @@ class _LoginPageState extends State<LoginPage> {
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: isLoading ? null : handleLogin,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xff2D3A8C),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  child: const Text("Sign In", style: TextStyle(fontSize: 16)),
+                  child: isLoading
+                      ? const SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              Colors.white,
+                            ),
+                          ),
+                        )
+                      : const Text(
+                          "Sign In",
+                          style: TextStyle(fontSize: 16, color: Colors.white),
+                        ),
                 ),
               ),
 
@@ -121,14 +182,26 @@ class _LoginPageState extends State<LoginPage> {
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: isLoading
+                      ? null
+                      : () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const RegisterPage(),
+                            ),
+                          );
+                        },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xff2D3A8C),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  child: const Text("Register", style: TextStyle(fontSize: 16)),
+                  child: const Text(
+                    "Register",
+                    style: TextStyle(fontSize: 16, color: Colors.white),
+                  ),
                 ),
               ),
             ],

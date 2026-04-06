@@ -1,82 +1,63 @@
-import 'dart:ui';
 import 'package:absensi_apps/view/home_page.dart';
 import 'package:absensi_apps/view/profile_page.dart';
 import 'package:absensi_apps/view/riwayat_absensi.dart';
 import 'package:flutter/material.dart';
+import 'package:crystal_navigation_bar/crystal_navigation_bar.dart';
+import 'dart:ui';
 
-class MainPage extends StatefulWidget {
-  const MainPage({super.key});
+class Navbarpage extends StatefulWidget {
+  const Navbarpage({super.key});
 
   @override
-  State<MainPage> createState() => _MainPageState();
+  State<Navbarpage> createState() => _NavbarpageState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _NavbarpageState extends State<Navbarpage> {
   int _currentIndex = 0;
 
-  final List<Widget> _pagesList = const [
-    HomePage(),
-    HistoryPage(),
-    ProfilePage(),
-  ];
+  final List<Widget> _pagesList = [HomePage(), HistoryPage(), ProfilePage()];
+
+  void _handleIndexChanged(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      appBar: AppBar(title: const Text("PPKD Go Absen")),
-
       body: _pagesList[_currentIndex],
-
-      /// LIQUID GLASS NAVBAR
+      backgroundColor: Color(0xFF0F172A),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: EdgeInsets.only(bottom: 10),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(30),
+          borderRadius: BorderRadiusGeometry.circular(15),
           child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
-            child: Container(
-              height: 70,
-              decoration: BoxDecoration(
-                color: Colors.blue.withOpacity(0.2),
-                borderRadius: BorderRadius.circular(30),
-                border: Border.all(color: Colors.white.withOpacity(0.3)),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  _buildItem(Icons.home, 0),
-                  _buildItem(Icons.history, 1),
-                  _buildItem(Icons.person, 2),
-                ],
-              ),
+            filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+            child: CrystalNavigationBar(
+              currentIndex: _currentIndex,
+              unselectedItemColor: const Color.fromARGB(179, 20, 20, 20),
+              backgroundColor: Colors.black.withOpacity(0.1),
+              borderWidth: 1,
+              outlineBorderColor: Colors.white,
+              onTap: _handleIndexChanged,
+              items: [
+                CrystalNavigationBarItem(
+                  icon: Icons.home,
+                  selectedColor: Colors.blueAccent,
+                ),
+                CrystalNavigationBarItem(
+                  icon: Icons.history,
+                  selectedColor: Colors.blueAccent,
+                ),
+                CrystalNavigationBarItem(
+                  icon: Icons.person,
+                  selectedColor: Colors.blueAccent,
+                ),
+              ],
             ),
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildItem(IconData icon, int index) {
-    final isActive = _currentIndex == index;
-
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          _currentIndex = index;
-        });
-      },
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
-        padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          color: isActive ? Colors.white.withOpacity(0.2) : Colors.transparent,
-          borderRadius: BorderRadius.circular(15),
-        ),
-        child: Icon(
-          icon,
-          size: 28,
-          color: isActive ? Colors.white : Colors.white.withOpacity(0.6),
         ),
       ),
     );

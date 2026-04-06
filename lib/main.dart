@@ -1,5 +1,7 @@
+import 'package:absensi_apps/liquid_navbar.dart';
 import 'package:absensi_apps/view/home_page.dart';
 import 'package:absensi_apps/view/login_page.dart';
+import 'package:absensi_apps/view/splashscreen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -15,7 +17,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.blueAccent)),
-      home: HomePage(),
+      home: SplashPage(),
     );
   }
 }
