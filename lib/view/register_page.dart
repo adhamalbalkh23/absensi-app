@@ -250,9 +250,22 @@ class _RegisterPageState extends State<RegisterPage> {
                     height: 55,
                     child: ElevatedButton(
                       onPressed: isLoading ? null : handleRegister,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xff1A237E),
+                        disabledBackgroundColor: Colors.grey,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
                       child: isLoading
-                          ? const CircularProgressIndicator()
-                          : const Text("REGISTER"),
+                          ? const CircularProgressIndicator(color: Colors.white)
+                          : const Text(
+                              "REGISTER",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                     ),
                   ),
                 ],

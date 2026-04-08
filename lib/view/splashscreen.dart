@@ -48,8 +48,8 @@ class _SplashPageState extends State<SplashPage> {
               children: [
                 Image.asset(
                   "assets/images/logo goabsen.png",
-                  height: 316,
-                  width: 316,
+                  height: 616,
+                  width: 616,
                 ),
               ],
             ),

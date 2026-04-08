@@ -15,7 +15,7 @@ class Navbarpage extends StatefulWidget {
 class _NavbarpageState extends State<Navbarpage> {
   int _currentIndex = 0;
 
-  final List<Widget> _pagesList = [HomePage(), HistoryPage(), ProfilePage()];
+  final List<Widget> _pagesList = [HomePage(), RiwayatAbsensi(), ProfilePage()];
 
   void _handleIndexChanged(int index) {
     setState(() {

@@ -34,7 +34,8 @@ class _LoginPageState extends State<LoginPage> {
         if (result.data?.token != null) {
           await PreferenceHandler().saveToken(result.data!.token!);
         }
-
+        await PreferenceHandler().saveUserName(result.data!.user!.name ?? "");
+        await PreferenceHandler().saveEmail(result.data!.user!.email ?? "");
         if (!mounted) return;
 
         ScaffoldMessenger.of(context).showSnackBar(
