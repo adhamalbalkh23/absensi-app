@@ -1,4 +1,4 @@
-package com.example.absensi_apps
+package com.ppkd.goabsen
 
 import io.flutter.embedding.android.FlutterActivity
 
